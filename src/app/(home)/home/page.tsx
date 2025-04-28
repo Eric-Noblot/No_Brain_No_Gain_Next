@@ -6,7 +6,7 @@ export default async function Home() {
   await connectToDatabase();  // On se connecte à MongoDB
   return (
     <div>
-      <h1>Connexion MongoDB réussie !</h1>
+      <h1>Connexion MongoDB ok !</h1>
     </div>
   );
 }
