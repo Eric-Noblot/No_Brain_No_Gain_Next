@@ -27,7 +27,7 @@ export default function Login() {
         e.preventDefault()
         if (emailValidity(formData.email)) {
             try {
-                const response = await fetch ("api/users/route", {
+                const response = await fetch ("/api/users", {
                     method: "POST",
                     headers: {
                         "Content-Type" : "application/json"
@@ -51,20 +51,39 @@ export default function Login() {
         const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (email == "") {
             setFormError("L'adresse mail est vide")
-            return
+            return false
         } else if (regex.test(email) === false) {
             setFormError("L'adresse mail n'est pas valide")
-            return
+            return false
         } else {
             setFormError("")
             return true
         }
     })
 
+    const handleGet = async () => {
+        try {
+            const response = await fetch("/api/users", {
+                method: "GET",
+                headers: {
+                    "Content-Type" : "application/json"
+                },
+            })
+            if (!response.ok) {
+                throw new Error("Erreur lors de la récupération des utilisateurs")
+            }
+            const data = await response.json()
+            console.log("MA DATA: ", data)
+        }
+        catch(error) {
+            console.log("Erreur reseau ou connexion (get)", error)
+        }
+    }
+
 
     return (
         <div className="bg-pink-300 min-h-screen flex justify-center items-center flex flex-col">
-            <h2 className="font-bold mb-2">Formulaire</h2>
+            <h2 className="font-bold mb-2">Salut Eric</h2>
             <form onSubmit = {handleSubmit} className="">
                 <div>
                     <label className= "block" htmlFor="name">Name</label>
@@ -117,6 +136,9 @@ export default function Login() {
                 }
                 {formError}
                 <Link className="hover:text-yellow-600" href="/signin">Sign in...</Link>
+                <button onClick = {handleGet} className= "ml-6 mt-2 cursor-pointer text-white p-2 bg-blue-400 rounded-md hover:bg-yellow-500">
+                        GET
+                </button>
         </div>
     )
 }
