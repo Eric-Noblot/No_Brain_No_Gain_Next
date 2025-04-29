@@ -9,7 +9,6 @@ const connexionString = `mongodb+srv://${PSEUDO_MONGOOSE}:${KEY_MONGOOSE}@cluste
 let isConnected = false;
 
 export async function connectToDatabase() {
-    console.log("je suis dans lib/connexion")
   if (isConnected) {
     console.log('Already connected to Database');
     return;

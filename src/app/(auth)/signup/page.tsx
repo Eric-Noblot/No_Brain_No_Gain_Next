@@ -1,9 +1,12 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Link from "next/link"
 
-export default function Login() {
+export default function Signup() {
+
+    const router = useRouter()
 
     const [formData, setFormData] = useState({
         name : "",
@@ -38,6 +41,7 @@ export default function Login() {
                     const data = await response.json()
                     console.log("Utilisateur crée avec succès: ", data)
                     setSubmitted(true)
+                    router.push("/home")
                 } else {
                     console.log("Erreur lors de la création de l\'utilisateur")
                 }
@@ -61,29 +65,9 @@ export default function Login() {
         }
     })
 
-    const handleGet = async () => {
-        try {
-            const response = await fetch("/api/users", {
-                method: "GET",
-                headers: {
-                    "Content-Type" : "application/json"
-                },
-            })
-            if (!response.ok) {
-                throw new Error("Erreur lors de la récupération des utilisateurs")
-            }
-            const data = await response.json()
-            console.log("MA DATA: ", data)
-        }
-        catch(error) {
-            console.log("Erreur reseau ou connexion (get)", error)
-        }
-    }
-
-
     return (
         <div className="bg-pink-300 min-h-screen flex justify-center items-center flex flex-col">
-            <h2 className="font-bold mb-2">Salut Eric</h2>
+            <h2 className="font-bold mb-2">Inscription</h2>
             <form onSubmit = {handleSubmit} className="">
                 <div>
                     <label className= "block" htmlFor="name">Name</label>
@@ -136,9 +120,6 @@ export default function Login() {
                 }
                 {formError}
                 <Link className="hover:text-yellow-600" href="/signin">Sign in...</Link>
-                <button onClick = {handleGet} className= "ml-6 mt-2 cursor-pointer text-white p-2 bg-blue-400 rounded-md hover:bg-yellow-500">
-                        GET
-                </button>
         </div>
     )
 }
