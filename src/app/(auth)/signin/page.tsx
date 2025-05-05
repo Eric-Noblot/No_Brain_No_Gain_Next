@@ -28,9 +28,14 @@ export default function Signin () {
 
         try {
 
-            const response = await fetch (`api/password/${formData}`, {
-                method: "GET",
+            const response = await fetch ("/api/auth/signin", {
+                method: "POST",
                 headers : {"Content-Type" : "application/json"},
+                body: JSON.stringify({
+                    ...formData,
+                    name: formData.name,
+                    password: formData.password
+            }),
             })
 
             if (!response.ok) {
@@ -39,6 +44,7 @@ export default function Signin () {
 
             const data = await response.json()
             console.log("Utilisateur trouvé: ", data)
+            router.push("/home")
 
         } catch (error) {
             console.log("Erreur lors de la connexion de l'utilisateur", error)
