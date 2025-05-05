@@ -19,7 +19,13 @@ export async function POST(request : Request) {
     try {
         await connectToDatabase()
         const data = await request.json()
-        const newUser = await User.create(data)
+        const newUser = await User.create(data);
+        // const newUser = await User.create({
+        //     name: data.name,
+        //     email: data.email,
+        //     password: data.password,
+        //     salt: data.salt,
+        // });
         return NextResponse.json(newUser,  { status: 201})
     } catch (error) {
         console.log("Erreur lors de l'envoi des donneés", error)

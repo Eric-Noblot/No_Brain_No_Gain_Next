@@ -16,6 +16,9 @@ export default function Home() {
       <div className="text-center flex flex-col w-[200px] items-center">
        
         <p>Utilisateur trouvé</p>
+        <button className= "mt-2 cursor-pointer text-white p-2 bg-blue-400 rounded-md hover:bg-yellow-500" type="submit">
+          LOG OUT
+        </button>
       </div>
 
     </div>

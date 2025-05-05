@@ -26,30 +26,90 @@ export default function Signup() {
         }))
     })
 
-    const handleSubmit = async (e : React.FormEvent) => {
-        e.preventDefault()
-        if (emailValidity(formData.email)) {
-            try {
-                const response = await fetch ("/api/users", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type" : "application/json"
-                    },
-                    body: JSON.stringify(formData)
-                })
-                if (response.ok) {
-                    const data = await response.json()
-                    console.log("Utilisateur crée avec succès: ", data)
-                    setSubmitted(true)
-                    router.push("/home")
-                } else {
-                    console.log("Erreur lors de la création de l\'utilisateur")
-                }
-            } catch (error) {
-                console.error("Erreur réseau ou autre: ", error)
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+    
+        if (!emailValidity(formData.email)) return;
+    
+        try {
+            const hashResponse = await fetch("/api/hash-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password: formData.password }),
+            });
+    
+            if (!hashResponse.ok) {
+                throw new Error("Erreur lors du hashage du mot de passe");
             }
+    
+            const { hash, salt } = await hashResponse.json();
+            console.log("HASH:", hash);
+            console.log("SALT:", salt);
+    
+            const userResponse = await fetch("/api/users", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    ...formData,
+                    password: hash,
+                    salt: salt,
+                }),
+            });
+    
+            if (!userResponse.ok) {
+                throw new Error("Erreur lors de la création de l'utilisateur");
+            }
+    
+            const userData = await userResponse.json();
+            console.log("Utilisateur créé avec succès :", userData);
+            setSubmitted(true);
+            router.push("/home");
+    
+        } catch (error) {
+            console.error("Erreur pendant le processus d'inscription :", error);
+            setFormError("Une erreur est survenue. Veuillez réessayer.");
         }
-    }
+    };
+
+    // const handleSubmit = async (e : React.FormEvent) => {
+    //     e.preventDefault()
+    //     if (emailValidity(formData.email)) {
+
+    //         const response = await fetch("/api/hash-password", {
+    //             method: "POST",
+    //             headers: { "Content-Type": "application/json" },
+    //             body: JSON.stringify({ password : formData.password}),
+    //         });
+    //         const data = await response.json();
+    //         console.log("HASH: ", data.hash);
+    //         console.log("SALT: ", data.salt);
+
+    //         try {
+                
+    //             const response = await fetch ("/api/users", {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "Content-Type" : "application/json"
+    //                 },
+    //                 body: JSON.stringify({
+    //                     ...formData,
+    //                     password: data.hash,
+    //                     salt: data.salt
+    //                 })
+    //             })
+    //             if (response.ok) {
+    //                 const data = await response.json()
+    //                 console.log("Utilisateur crée avec succès: ", data)
+    //                 setSubmitted(true)
+    //                 router.push("/home")
+    //             } else {
+    //                 console.log("Erreur lors de la création de l\'utilisateur")
+    //             }
+    //         } catch (error) {
+    //             console.error("Erreur réseau ou autre: ", error)
+    //         }
+    //     }
+    // }
 
     const emailValidity = ((email : string) => {
         const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
