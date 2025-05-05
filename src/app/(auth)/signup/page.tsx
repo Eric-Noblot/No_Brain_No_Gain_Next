@@ -32,7 +32,7 @@ export default function Signup() {
         if (!emailValidity(formData.email)) return;
     
         try {
-            const hashResponse = await fetch("/api/hash-password", {
+            const hashResponse = await fetch("/api/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ password: formData.password }),
@@ -43,8 +43,6 @@ export default function Signup() {
             }
     
             const { hash, salt } = await hashResponse.json();
-            console.log("HASH:", hash);
-            console.log("SALT:", salt);
     
             const userResponse = await fetch("/api/users", {
                 method: "POST",

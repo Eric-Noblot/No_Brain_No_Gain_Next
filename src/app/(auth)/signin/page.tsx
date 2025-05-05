@@ -23,9 +23,26 @@ export default function Signin () {
         }))
     })
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e : React.FormEvent) => {
         e.preventDefault()
-        alert('hello')
+
+        try {
+
+            const response = await fetch (`api/password/${formData}`, {
+                method: "GET",
+                headers : {"Content-Type" : "application/json"},
+            })
+
+            if (!response.ok) {
+                throw new Error("Erreur lors de la récuparation d'un utilisateur")
+            }
+
+            const data = await response.json()
+            console.log("Utilisateur trouvé: ", data)
+
+        } catch (error) {
+            console.log("Erreur lors de la connexion de l'utilisateur", error)
+        }
     }
 
     return (
