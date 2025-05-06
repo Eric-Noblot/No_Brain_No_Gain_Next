@@ -18,6 +18,9 @@ const Header = (() => {
         <Link href="/crud">
             CRUD 
         </Link>
+        <Link href="/">
+            LOGOUT
+        </Link>
     </header>
     )
 })

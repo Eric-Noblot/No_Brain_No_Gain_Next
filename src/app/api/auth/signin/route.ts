@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
     //   { message: 'Connexion réussie', user: { name: user.name, email: user.email } },
-      { message: 'Connexion réussie', user: { user : user } },
+      { message: 'Connexion réussie', user: user },
       { status: 200 }
     )
 

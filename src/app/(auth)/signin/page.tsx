@@ -44,6 +44,8 @@ export default function Signin () {
 
             const data = await response.json()
             console.log("Utilisateur trouvé: ", data)
+            
+            localStorage.setItem("username", data.user.name)
             router.push("/home")
 
         } catch (error) {
