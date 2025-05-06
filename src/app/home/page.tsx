@@ -3,6 +3,7 @@
 import { connectToDatabase } from "../../../lib/connexion";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"
+import Games from "../components/Games";
 
 export const dynamic = "force-dynamic"; // Ça force Next.js à exécuter la route API à chaque requête, sans utiliser le cache.
 
@@ -69,7 +70,7 @@ export default function Home() {
       <h2>Bienvenue {userData?.name} !</h2>
       <div className="text-center flex flex-col w-[200px] items-center">
        
-        <p>Utilisateur trouvé</p>
+        <Games userData= {userData}/>
         <button onClick={handleLogout} className= "mt-2 cursor-pointer text-white p-2 bg-blue-400 rounded-md hover:bg-yellow-500">
           LOG OUT
         </button>

@@ -3735,7 +3735,7 @@ export const questions = [
                     apprenti: [
                         {
                             id: 0,
-                            question: "De quelle équipe fait partie Iceman?",
+                            question: "Quelles particules dans l'eau?",
                             options: [
                                 "The X-Men",
                                 "The Fantastic Four",
