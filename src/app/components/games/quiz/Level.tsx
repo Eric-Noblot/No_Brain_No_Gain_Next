@@ -1,6 +1,6 @@
 'use client';
 
-import Stepper from 'react-stepper-horizontal';
+import Stepper from 'react-stepper-horizontal'
 import { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 

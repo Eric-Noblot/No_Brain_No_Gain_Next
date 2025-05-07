@@ -8,10 +8,6 @@ import Level from "./Level"
 import ProgressBar from './ProgressBar';
 import QuizOver from "./QuizOver"
 
-// Composants que tu avais commentés, à décommenter si tu les utilises
-// import Navbar from '../NavBar/Navbar';
-
-
 // Firebase
 // import { db, auth } from '../Firebase/firebase';
 // import { doc, updateDoc } from 'firebase/firestore';
@@ -90,11 +86,33 @@ const Quiz: React.FC = () => {
   };
 
   const updateFirestore = async () => {
-    // const userId = auth.lastNotifiedUid;
-    // const tropheeRef = doc(db, `users/${userId}/`);
-    // await updateDoc(tropheeRef, {
-    //   [categoryNameUrl]: hasAlreadyPlayed ? levelFromCategory + 1 : quizLevel + 1,
-    // });
+    const userId = auth.lastNotifiedUid;
+    const tropheeRef = doc(db, `users/${userId}/`);
+    await updateDoc(tropheeRef, {
+      [categoryNameUrl]: hasAlreadyPlayed ? levelFromCategory + 1 : quizLevel + 1,
+    });
+  };
+
+  const updateUserProgress = async () => {
+    try {
+      const res = await fetch('/api/update-progress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: auth.lastNotifiedUid,
+          category: categoryNameUrl,
+          level: hasAlreadyPlayed ? levelFromCategory + 1 : quizLevel + 1,
+        }),
+      });
+  
+      if (!res.ok) throw new Error('Failed to update progress');
+      const data = await res.json();
+      console.log('Progress updated:', data);
+    } catch (error) {
+      console.error('Error updating progress:', error);
+    }
   };
 
   useEffect(() => {
