@@ -3,7 +3,7 @@ import { connectToDatabase } from "../../../../../lib/connexion"
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, category, level } = await req.json();
+    const { userName, category, level } = await req.json();
 
     await connectToDatabase();
 

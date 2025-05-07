@@ -85,23 +85,26 @@ const Quiz: React.FC = () => {
     }
   };
 
-  const updateFirestore = async () => {
-    const userId = auth.lastNotifiedUid;
-    const tropheeRef = doc(db, `users/${userId}/`);
-    await updateDoc(tropheeRef, {
-      [categoryNameUrl]: hasAlreadyPlayed ? levelFromCategory + 1 : quizLevel + 1,
-    });
-  };
+  // const updateFirestore = async () => {
+  //   const userId = auth.lastNotifiedUid;
+  //   const tropheeRef = doc(db, `users/${userId}/`);
+  //   await updateDoc(tropheeRef, {
+  //     [categoryNameUrl]: hasAlreadyPlayed ? levelFromCategory + 1 : quizLevel + 1,
+  //   });
+  // };
 
   const updateUserProgress = async () => {
     try {
+
+      const userName = localStorage.getItem("name")
+      console.log("USERNAME: ", userName)
       const res = await fetch('/api/update-progress', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: auth.lastNotifiedUid,
+          userName: userName,
           category: categoryNameUrl,
           level: hasAlreadyPlayed ? levelFromCategory + 1 : quizLevel + 1,
         }),
@@ -176,7 +179,8 @@ const Quiz: React.FC = () => {
     setLevelFromCategory(levelFromQuizOver);
     setArrayRightAnswers([]);
     if (failed !== 'failed') {
-      updateFirestore();
+      // updateFirestore();
+      updateUserProgress();
     }
   };
 
@@ -202,7 +206,7 @@ const Quiz: React.FC = () => {
             nameCategory={categoryNameUrl}
             storageQuestions={storageQuestions}
             arrayRightAnswers={arrayRightAnswers}
-            updateFirestore={updateFirestore}
+            updateFirestore={updateUserProgress}
             />
             <div>Quiz terminé</div>
         </>
